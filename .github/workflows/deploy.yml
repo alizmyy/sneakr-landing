@@ -1,0 +1,44 @@
+# Этот файл — «робот-издатель». Каждый раз, когда ты отправляешь (push) код в ветку main,
+# GitHub сам: скачает код, установит зависимости, соберёт сайт и выложит его на GitHub Pages.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+# Права, которые нужны роботу для публикации
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # 1. Скачать код из репозитория
+      - uses: actions/checkout@v4
+
+      # 2. Установить Node.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # 3. Установить зависимости (node_modules) по package-lock.json
+      - run: npm ci
+
+      # 4. Собрать сайт в папку dist
+      - run: npm run build
+
+      # 5. Включить Pages (если ещё не включён) и выложить туда dist
+      - uses: actions/configure-pages@v5
+        with:
+          enabled: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4

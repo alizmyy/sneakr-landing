@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/* Тема Tailwind v4: здесь мы объявляем свои цвета, шрифты и анимации.
+   После объявления их можно использовать как классы: bg-ink, text-volt,
+   font-display, animate-marquee и т.д. */
+@theme {
+  /* Цвета бренда */
+  --color-ink: #0b0b10; /* почти чёрный фон */
+  --color-panel: #14141c; /* фон карточек */
+  --color-volt: #ccff00; /* неоновый лайм — акцент */
+
+  /* Шрифты с Google Fonts (подключены в index.html) */
+  --font-display: "Unbounded", "Arial Black", sans-serif;
+  --font-body: "Manrope", system-ui, sans-serif;
+
+  /* Бесконечная бегущая строка */
+  --animate-marquee: marquee 24s linear infinite;
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* Плавная прокрутка по якорным ссылкам (#collection и т.п.) */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  /* прячем горизонтальный скролл от наклонённой бегущей строки */
+  overflow-x: hidden;
+  background: var(--color-ink);
+  color: #fff;
+  font-family: var(--font-body);
+}
+
+/* Контурный текст: без заливки, только обводка. Модный приём в заголовках */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.9);
+}
+
+/* Цвет выделения текста мышкой — тоже в стиле бренда */
+::selection {
+  background: var(--color-volt);
+  color: #000;
+}
